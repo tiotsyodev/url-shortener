@@ -17,3 +17,8 @@ func NewStatDomain(id int, UrlId int, Ip string, device string, userAgent string
 		UserAgent: userAgent,
 	}
 }
+
+type StatsByAlias struct {
+	ByDays    map[string]int
+	ByDevices map[string]int
+}

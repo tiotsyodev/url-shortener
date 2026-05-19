@@ -3,6 +3,7 @@ package redirect_service
 import (
 	"context"
 
+	core_cache "github.com/tiotsyodev/url-shortener.git/internal/core/cache"
 	core_domain "github.com/tiotsyodev/url-shortener.git/internal/core/domain"
 )
 
@@ -16,11 +17,13 @@ type StatRepo interface {
 type RedirectService struct {
 	UrlRepo UrlRepo
 	StatRepo StatRepo
+	CacheClient core_cache.Cache
 }
 
-func NewRedirectService(urlRepo UrlRepo, statRepo StatRepo) *RedirectService {
+func NewRedirectService(urlRepo UrlRepo, statRepo StatRepo, rds core_cache.Cache) *RedirectService {
 	return &RedirectService{
 		UrlRepo: urlRepo,
 		StatRepo: statRepo,
+		CacheClient: rds,
 	}
 }

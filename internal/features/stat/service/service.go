@@ -8,6 +8,7 @@ import (
 
 type StatRepo interface {
 	SaveClick(ctx context.Context, dom core_domain.StatDomain) error 
+	GetStats(ctx context.Context, alias string) (core_domain.StatsByAlias, error)
 }
 
 type StatService struct {
