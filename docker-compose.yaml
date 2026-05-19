@@ -37,3 +37,15 @@ services:
     volumes:
       - ./out/redis-data:/data
     command: redis-server --requirepass ${REDIS_PASSWORD} --port ${REDIS_PORT}
+  shortener-app:
+    build: .
+    container_name: shortener-app
+    env_file:
+      - .env
+    ports:
+      - "${HTTP_PORT}:${HTTP_PORT}"
+    depends_on:
+      shortener-postgres:
+        condition: service_healthy
+      shortener-redis:
+        condition: service_started
