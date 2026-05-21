@@ -7,31 +7,36 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+
+	core_http_midlware "github.com/tiotsyodev/url-shortener.git/internal/core/transport/http/middleware.go"
 )
 
 type HTTPServer struct {
 	Mux    *http.ServeMux
 	Config Config
 	Log    *slog.Logger
+	Middlewares []core_http_midlware.Middleware
 }
 
 func NewHttpServer(
 	mux    *http.ServeMux,
 	cfg Config,
 	log    *slog.Logger,
+	middlewares []core_http_midlware.Middleware,
 ) *HTTPServer {
 	return &HTTPServer {
 		Mux:    mux,
 		Config: cfg,
 		Log:    log,
-		
+		Middlewares: middlewares,
 	}
 }
 
 func (h *HTTPServer) Run(ctx context.Context) error {
+	mux := core_http_midlware.ChainMiddleware(h.Mux, h.Middlewares...)
 	server := http.Server{
 		Addr: h.Config.Host + ":" + strconv.Itoa(h.Config.Port),
-		Handler: h.Mux,	
+		Handler: mux,	
 		IdleTimeout: h.Config.IdleTimeout,
 		ReadTimeout: h.Config.Timeout,
 	}

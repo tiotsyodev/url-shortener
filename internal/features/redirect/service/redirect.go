@@ -14,6 +14,7 @@ func (s *RedirectService) Redirect(ctx context.Context, alias string) (core_doma
 	if err == nil  {
 		var cachedDomain core_domain.UrlDomain
 		if err := json.Unmarshal([]byte(cached), &cachedDomain); err == nil {
+			s.Metrics.RedirectCounter.WithLabelValues("cache").Inc()
 			return cachedDomain, nil
 		}
 	}
@@ -26,6 +27,6 @@ func (s *RedirectService) Redirect(ctx context.Context, alias string) (core_doma
 	if data, err := json.Marshal(url); err == nil {
         s.CacheClient.Set(ctx, alias, string(data), time.Hour)
     }
-
+	s.Metrics.RedirectCounter.WithLabelValues("database").Inc()
 	return url, nil
 }

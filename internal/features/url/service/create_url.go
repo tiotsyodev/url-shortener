@@ -12,11 +12,11 @@ func (s *URLService) CreateURL(ctx context.Context, d core_domain.UrlDomain ) (c
 	if err := d.Validate(); err != nil {
 		return core_domain.UrlDomain{}, fmt.Errorf("validate url domain: %w", err)
 	}
-	
+
 	dom, err := s.Repo.CreateURL(ctx, d)
 	if err != nil {
 		return core_domain.UrlDomain{}, fmt.Errorf("create url: %w", err)
 	}
-
+	s.Metrics.CreatedLinksCounter.Inc()
 	return dom, nil
 }

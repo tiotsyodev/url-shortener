@@ -1,4 +1,4 @@
-package user_repo
+package url_repo
 
 type UrlModel struct {
 	Id    int

@@ -8,7 +8,7 @@ import (
 )
 
 func (s *StatService) GetStats(ctx context.Context, alias string) (core_domain.StatsByAlias, error) {
-	stats, err := s.StatRepo.GetStatsByAlias(ctx, alias)
+	stats, err := s.StatRepo.GetStats(ctx, alias)
 	if err != nil {
 		return core_domain.StatsByAlias{}, fmt.Errorf("get stats: %w", err)
 	}

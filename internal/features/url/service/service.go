@@ -4,6 +4,7 @@ import (
 	"context"
 
 	core_domain "github.com/tiotsyodev/url-shortener.git/internal/core/domain"
+	core_metrics "github.com/tiotsyodev/url-shortener.git/internal/core/metrics"
 )
 
 type URLRepo interface {
@@ -16,10 +17,12 @@ type URLRepo interface {
 
 type URLService struct {
 	Repo URLRepo
+	Metrics core_metrics.Metrics
 }
 
-func NewUserService(repo URLRepo) *URLService {
+func NewUserService(repo URLRepo, metrics core_metrics.Metrics) *URLService {
 	return &URLService{
 		Repo: repo,
+		Metrics: metrics,
 	}
 }
